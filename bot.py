@@ -51,6 +51,20 @@ class MyClient(discord.Client):
             print(repr(e))
 
 # RUN
+TOKEN = 'NjY5MTAyODE3OTMxMTY1Njk2.XslnDw.RVzuiySsJ01-f3wV3d0JmTEoTdQ'
+
+POST_ID = 713786296094425149
+
+ROLES = {
+	'🍉': 713447505106436198, # Cr Ops
+	'🎵': 713447556922736711, # PUBG
+	'🎮': 713447748623663124 # Standoff 2
+}
+
+EXCROLES = {}
+
+MAX_ROLES_PER_USER = 3333
+
 client = MyClient()
 TOKEN = os.environ.get('BOT_TOKEN')
 client.run(config.TOKEN)
