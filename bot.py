@@ -54,5 +54,6 @@ class MyClient(discord.Client):
 client = MyClient()
 #client.run(config.TOKEN)
 TOKEN = os.environ.get('BOT_TOKEN')
+client.run(config.TOKEN)
 
 POST_ID
