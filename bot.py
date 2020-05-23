@@ -52,7 +52,6 @@ class MyClient(discord.Client):
 
 # RUN
 client = MyClient()
-#client.run(config.TOKEN)
 TOKEN = os.environ.get('BOT_TOKEN')
 client.run(config.TOKEN)
 
