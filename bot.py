@@ -51,8 +51,6 @@ class MyClient(discord.Client):
             print(repr(e))
 
 # RUN
-TOKEN = 'NjY5MTAyODE3OTMxMTY1Njk2.XslnDw.RVzuiySsJ01-f3wV3d0JmTEoTdQ'
-
 POST_ID = 713786296094425149
 
 ROLES = {
