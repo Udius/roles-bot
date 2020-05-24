@@ -63,4 +63,4 @@ MAX_ROLES_PER_USER = 3333
 
 client = MyClient()
 TOKEN = os.environ.get('BOT_TOKEN')
-client.run(TOKEN)
+client.run(str(TOKEN))
