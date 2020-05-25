@@ -76,15 +76,15 @@ class MyClient(discord.Client):
                     perm = True
 
             if perm:
-                post_id = message.content.split()[1]
-                role_id = message.content.split()[2]
+                post_id = int(message.content.split()[1])
+                role_id = int(message.content.split()[2])
                 
                 await message.delete()
                 
                 config.POST_ID.append(post_id)
                 config.ROLES[post_id] = role_id
                 
-                print('[SUCCESS] Pinrole by {0}: {1}'.format(member, text))
+                print('[SUCCESS] Pinrole by {0}: {1}'.format(member))
 
             else:
                 print('[ERROR] Low permissions to pinrole: {0}'.format(member))
