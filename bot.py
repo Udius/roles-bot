@@ -78,15 +78,17 @@ class MyClient(discord.Client):
 
             if perm:
                 role_id = message.content.split()[1]
-                post_id = message.id
-                config.POST_ID.append(post_id)
                 config.ROLES[post_id] = role_id
 
                 text = message.content.split(' ')[2:].copy()
                 text = ' '.join(text)
 
-                await channel.send(text)
                 await message.delete()
+                await channel.send(text)
+                
+                post_id = message.id
+                config.POST_ID.append(post_id)
+                
                 print('[SUCCESS] Role by {0}: {1}'.format(member, text))
 
             else:
