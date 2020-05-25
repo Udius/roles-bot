@@ -44,7 +44,7 @@ class MyClient(discord.Client):
             print('[SUCCESS] Role {1.name} has been remove for user {0.display_name}'.format(member, role))
 
         except KeyError as e:
-            print('[ERROR] KeyError, no role found for ' + payload.message_id)
+            print('[ERROR] KeyError, no role found for ' + str(payload.message_id))
         except Exception as e:
             print(repr(e))
 
