@@ -93,7 +93,7 @@ class MyClient(discord.Client):
 
 # RUN
 client = MyClient()
-TOKEN = os.environ.get('BOT_TOKEN') id
+TOKEN = os.environ.get('BOT_TOKEN')
 client.run(TOKEN)
 
 # python bot.py
