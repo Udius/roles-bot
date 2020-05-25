@@ -64,7 +64,7 @@ class MyClient(discord.Client):
 
             await channel.send(text)
             await message.delete()
-            print('Message by {0}: {1}'.format(member, text))
+            print('[SUCCESS] Message by {0}: {1}'.format(member, text))
 
         elif message.content.split()[0] == 'writerole' or message.content.split()[0] == 'wrrole':
             perm = False
