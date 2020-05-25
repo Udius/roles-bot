@@ -1,8 +1,8 @@
 from pickle import load
 
-with open('data\\POST_ID', 'rb') as psts_ids:
+with open('POST_ID', 'rb') as psts_ids:
 	POST_ID = load(psts_ids)
-with open('data\\ROLES', 'rb') as rls:
+with open('ROLES', 'rb') as rls:
 	ROLES = load(rls)
 
 EXCROLES = {}
