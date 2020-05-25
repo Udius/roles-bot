@@ -67,32 +67,27 @@ class MyClient(discord.Client):
             await message.delete()
             print('[SUCCESS] Message by {0}: {1}'.format(member, text))
 
-        elif message.content.split()[0] == 'writerole' or message.content.split()[0] == 'wrrole':
+        elif message.content.split()[0] == 'pinrole' or message.content.split()[0] == 'prole':
             perm = False
             member = message.author.name
 
             for role in message.author.roles:
                 if role.id in config.HIGHTROLES:
                     perm = True
-                print(role.id)
 
             if perm:
-                role_id = message.content.split()[1]
-
-                text = message.content.split(' ')[2:].copy()
-                text = ' '.join(text)
-
-                await message.delete()
-                await channel.send(text)
+                post_id = message.content.split()[1]
+                role_id = message.content.split()[2]
                 
-                post_id = message.id
+                await message.delete()
+                
                 config.POST_ID.append(post_id)
                 config.ROLES[post_id] = role_id
                 
-                print('[SUCCESS] Role by {0}: {1}'.format(member, text))
+                print('[SUCCESS] Pinrole by {0}: {1}'.format(member, text))
 
             else:
-                print('[ERROR] Low permissions: {0}'.format(member))
+                print('[ERROR] Low permissions to pinrole: {0}'.format(member))
 
 # RUN
 client = MyClient()
