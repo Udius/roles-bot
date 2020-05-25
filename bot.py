@@ -83,7 +83,7 @@ class MyClient(discord.Client):
                 config.POST_ID.append(post_id)
                 config.ROLES[post_id] = role_id
                 
-                print('[SUCCESS] Pinrole by {0}: {1}'.format(member))
+                print('[SUCCESS] Pinrole by {0}'.format(member))
 
             else:
                 print('[ERROR] Low permissions to pinrole: {0}'.format(member))
