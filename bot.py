@@ -18,7 +18,7 @@ class MyClient(discord.Client):
 
             try:
                 role = utils.get(message.guild.roles, id=config.ROLES[payload.message_id]) # объект выбранной роли (если есть)
-
+                print(role)
                 if (len([i for i in member.roles if i.id not in config.EXCROLES]) <= config.MAX_ROLES_PER_USER):
                     await member.add_roles(role)
                     print('[SUCCESS] User {0.display_name} has been granted with role {1.name}'.format(member, role))
