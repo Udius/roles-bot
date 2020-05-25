@@ -58,7 +58,7 @@ class MyClient(discord.Client):
         channel = message.channel
 
         if message.content.split()[0] == 'writehere' or message.content.split()[0] == 'wrhere':
-            text = message.content.split()[1:].copy()
+            text = message.content.split(' ')[1:].copy()
             text = ' '.join(text)
             member = message.author.name
 
@@ -81,7 +81,7 @@ class MyClient(discord.Client):
                 config.POST_ID.append(post_id)
                 config.ROLES[post_id] = role_id
 
-                text = message.content.split()[2:].copy()
+                text = message.content.split(' ')[2:].copy()
                 text = ' '.join(text)
 
                 await channel.send(text)
