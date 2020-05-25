@@ -96,9 +96,9 @@ class MyClient(discord.Client):
                 config.POST_ID.append(post_id)
                 config.ROLES[post_id] = role_id
                 
-                with open('data\\POST_ID', 'wb') as psts_ids:
+                with open('POST_ID', 'wb') as psts_ids:
                     dump(config.POST_ID, psts_ids)
-                with open('data\\ROLES', 'wb') as rls:
+                with open('ROLES', 'wb') as rls:
                     dump(config.ROLES, rls)
                 
                 print('[SUCCESS] Pinrole by {0}'.format(member))
@@ -118,9 +118,9 @@ class MyClient(discord.Client):
                 config.POST_ID = []
                 config.ROLES = {}
 
-                with open('data\\POST_ID', 'wb') as psts_ids:
+                with open('POST_ID', 'wb') as psts_ids:
                     dump(config.POST_ID, psts_ids)
-                with open('data\\ROLES', 'wb') as rls:
+                with open('ROLES', 'wb') as rls:
                     dump(config.ROLES, rls)
 
                 await channel.send('**[SUCCESS]** All roles has been dellited from posts')
