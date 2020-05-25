@@ -11,7 +11,6 @@ class MyClient(discord.Client):
         print('Logged on as {0}!'.format(self.user))
 
     async def on_raw_reaction_add(self, payload):
-        print(payload.message_id in config.POST_ID, payload.message_id, config.POST_ID)
         if payload.message_id in config.POST_ID:
             channel = self.get_channel(payload.channel_id) # получаем объект канала
             message = await channel.fetch_message(payload.message_id) # получаем объект сообщения
