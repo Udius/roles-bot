@@ -16,7 +16,7 @@ class MyClient(discord.Client):
                 self.DataChannel = channel
 
                 async for message in channel.history():
-                    if message.content.split()[0] == '[ROLEDATA]':
+                    if message.content.split()[0] == '**[ROLEDATA]**':
                         post_id = int(message.content.split()[1])
                         role_id = int(message.content.split()[2])
 
@@ -24,7 +24,6 @@ class MyClient(discord.Client):
                         config.ROLES[post_id] = role_id
 
                 break
-                #await channel.send("Hi, i'm here")
 
     async def on_raw_reaction_add(self, payload):
         if payload.message_id in config.POST_ID:
