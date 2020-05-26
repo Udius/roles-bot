@@ -133,7 +133,7 @@ class MyClient(discord.Client):
                             if mem.bot:
                                 bots.append('@' + str(mem) + ' - ' + str(mem.id))
 
-                        await channel.send('**[SUCCESS]** Bot list:\n' + '\n '.join(bots))
+                        await channel.send('**[SUCCESS]** Bot list:\n ' + '\n '.join(bots))
                         await message.delete()
 
                         print('[SUCCESS] Get botlist has ben donned by', member)
