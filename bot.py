@@ -1,9 +1,8 @@
-# cd D:\Python\discord
+# cd D:\Python\discord\раздатчик ролей
 # python bot.py
-    
+
 import discord, os
-from discord import utils
-from pickle import dump
+from discord import utils   
 from os import environ
 
 import config
@@ -11,6 +10,21 @@ import config
 class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged on as {0}!'.format(self.user))
+        for i in client.get_guild(669103335730839585).channels:
+            if i.name == 'data' or i.name == 'DATA':
+                channel = i
+                self.DataChannel = channel
+
+                async for message in channel.history():
+                    if message.content.split()[0] == '[ROLEDATA]':
+                        post_id = int(message.content.split()[1])
+                        role_id = int(message.content.split()[2])
+
+                        config.POST_ID.append(post_id)
+                        config.ROLES[post_id] = role_id
+
+                break
+                #await channel.send("Hi, i'm here")
 
     async def on_raw_reaction_add(self, payload):
         if payload.message_id in config.POST_ID:
@@ -20,7 +34,6 @@ class MyClient(discord.Client):
 
             try:
                 role = utils.get(message.guild.roles, id=config.ROLES[payload.message_id]) # объект выбранной роли (если есть)
-                print(role)
                 if (len([i for i in member.roles if i.id not in config.EXCROLES]) <= config.MAX_ROLES_PER_USER):
                     await member.add_roles(role)
                     print('[SUCCESS] User {0.display_name} has been granted with role {1.name}'.format(member, role))
@@ -51,23 +64,20 @@ class MyClient(discord.Client):
             except Exception as e:
                 print(repr(e))
 
-    #async def on_guild_join(self, guild): # событие подключения к серверу
-    #    category = guild.categories[0] # выбирает первую категорию из сервера, к которому подключился
-    #    channel = category.channels[0] # получает первый канал в первой категории
-    #    await channel.send("Something") # отправка самого сообщения
-
     async def on_message(self, message):
         #category = message.category
         channel = message.channel
+        member = message.author
 
-        if message.content.split()[0] == 'writehere' or message.content.split()[0] == 'wrhere' or message.content.split()[0] == '!!!':
-            member = message.author.name
-            perm = False
+        perm = False
 
-            for role in message.author.roles:
-                if role.id in config.HIGHTROLES:
-                    perm = True
-            if perm:
+        for role in message.author.roles:
+            if role.id in config.HIGHTROLES:
+                perm = True
+
+        if perm:
+            if message.content.split()[0] == '//write' or message.content.split()[0] == '//wr' or message.content.split()[0] == '!!!':
+
                 text = message.content.split(' ')[1:].copy()
                 text = ' '.join(text)
 
@@ -76,59 +86,60 @@ class MyClient(discord.Client):
 
                 print('[SUCCESS] Message by {0}: {1}'.format(member, text))
 
-            else:
-                print('[ERROR] Low permissions to writehere: {0}'.format(member))
+            elif message.content.split()[0] == '//pin' or message.content.split()[0] == '//p':
+                if len(message.content.split()) == 3:
 
-        elif message.content.split()[0] == 'pinrole' or message.content.split()[0] == 'prole':
-            perm = False
-            member = message.author.name
+                    post_id = int(message.content.split()[1])
+                    role_id = int(message.content.split()[2])
 
-            for role in message.author.roles:
-                if role.id in config.HIGHTROLES:
-                    perm = True
+                    await message.delete()
+                    
+                    config.POST_ID.append(post_id)
+                    config.ROLES[post_id] = role_id
+                    
+                    await self.DataChannel.send('**[ROLEDATA]** ' + ' '.join(message.content.split()[1:]))
+                    
+                    print('[SUCCESS] Pinrole by {0}'.format(member))
 
-            if perm:
-                post_id = int(message.content.split()[1])
-                role_id = int(message.content.split()[2])
-                
-                await message.delete()
-                
-                config.POST_ID.append(post_id)
-                config.ROLES[post_id] = role_id
-                
-                with open('POST_ID', 'wb') as psts_ids:
-                    dump(config.POST_ID, psts_ids)
-                with open('ROLES', 'wb') as rls:
-                    dump(config.ROLES, rls)
-                
-                print('[SUCCESS] Pinrole by {0}'.format(member))
+                else:
+                    await channel.send('**[ERROR]** Wrong format!')
+                    print('[ERROR] Wrong format by ' + member)
 
-            else:
-                print('[ERROR] Low permissions to pinrole: {0}'.format(member))
+            elif message.content.split()[0] == '//cleanrole' or message.content.split()[0] == '//clrole':
 
-        elif message.content == 'clearroles' or message.content == 'clroles':
-            perm = False
-            member = message.author.name
-
-            for role in message.author.roles:
-                if role.id in config.HIGHTROLES:
-                    perm = True
-
-            if perm:
                 config.POST_ID = []
                 config.ROLES = {}
 
-                with open('POST_ID', 'wb') as psts_ids:
-                    dump(config.POST_ID, psts_ids)
-                with open('ROLES', 'wb') as rls:
-                    dump(config.ROLES, rls)
+                async for mes in self.DataChannel.history():
+                    if mes.content.split()[0] == '[ROLEDATA]':
+                        await mes.delete()
 
                 await channel.send('**[SUCCESS]** All roles has been dellited from posts')
 
                 print('[SUCCESS] All roles has been deleted from posts by', member)
 
-            else:
-                print('[ERROR] Low permissions to clearroles:', member)
+            elif message.content == '//clear room' or message.content == '//cl room':
+
+                async for mes in channel.history():
+                    await mes.delete()
+
+                print('[SUCCESS] Channel has been cleaned')
+
+            elif message.content.split()[0] == '//get':
+                if message.content.split()[1] == 'botlist':
+                    bots = list()
+
+                    for mem in client.get_all_members():
+                        if mem.bot:
+                            bots.append(mem.name + ' - ' + str(member.id))
+
+                    await channel.send('**[SUCCESS]** Bot list:\n' + '\n'.join(bots))
+                    await message.delete()
+
+                    print('[SUCCESS] Get botlist has ben donned by', member)
+
+        else:
+            print('[ERROR] Low permissions by ' + member)
 
 
 # RUN
@@ -137,4 +148,4 @@ TOKEN = environ.get('BOT_TOKEN')
 client.run(TOKEN)
 
 # python bot.py
-# cd D:\Python\discord
+# cd D:\Python\discord\раздатчик ролей
