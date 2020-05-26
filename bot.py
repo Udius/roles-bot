@@ -64,7 +64,7 @@ class MyClient(discord.Client):
                 print(repr(e))
 
     async def on_message(self, message):
-        if message.content[0:2] == '//':
+        if message.content[0:2] == '//' or message.content[0:3] == '!!!':
             #category = message.category
             channel = message.channel
             member = message.author.name
