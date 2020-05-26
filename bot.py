@@ -131,7 +131,7 @@ class MyClient(discord.Client):
 
                         for mem in client.get_all_members():
                             if mem.bot:
-                                bots.append(mem + ' - ' + str(message.author.id))
+                                bots.append(str(mem) + ' - ' + str(message.author.id))
 
                         await channel.send('**[SUCCESS]** Bot list:\n' + '\n'.join(bots))
                         await message.delete()
