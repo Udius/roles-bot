@@ -129,9 +129,9 @@ class MyClient(discord.Client):
                     if message.content.split()[1] == 'botlist':
                         bots = list()
 
-                        for mem in client.get_all_members():
+                        for mem in client.get_all_members(664769832377384990):
                             if mem.bot:
-                                bots.append(str(mem) + ' - ' + str(message.author.id))
+                                bots.append('@' + str(mem) + ' - ' + str(mem.author.id))
 
                         await channel.send('**[SUCCESS]** Bot list:\n' + '\n'.join(bots))
                         await message.delete()
