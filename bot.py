@@ -10,7 +10,7 @@ import config
 class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged on as {0}!'.format(self.user))
-        for i in client.get_guild(669103335730839585).channels:
+        for i in client.get_guild(664769832377384990).channels:
             if i.name == 'data' or i.name == 'DATA':
                 channel = i
                 self.DataChannel = channel
