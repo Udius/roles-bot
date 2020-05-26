@@ -67,7 +67,7 @@ class MyClient(discord.Client):
     async def on_message(self, message):
         #category = message.category
         channel = message.channel
-        member = message.author
+        member = message.author.name
 
         perm = False
 
