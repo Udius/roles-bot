@@ -65,81 +65,82 @@ class MyClient(discord.Client):
                 print(repr(e))
 
     async def on_message(self, message):
-        #category = message.category
-        channel = message.channel
-        member = message.author.name
+        if message.content[0:2] == '//':
+            #category = message.category
+            channel = message.channel
+            member = message.author.name
 
-        perm = False
+            perm = False
 
-        for role in message.author.roles:
-            if role.id in config.HIGHTROLES:
-                perm = True
+            for role in message.author.roles:
+                if role.id in config.HIGHTROLES:
+                    perm = True
 
-        if perm:
-            if message.content.split()[0] == '//write' or message.content.split()[0] == '//wr' or message.content.split()[0] == '!!!':
+            if perm:
+                if message.content.split()[0] == '//write' or message.content.split()[0] == '//wr' or message.content.split()[0] == '!!!':
 
-                text = message.content.split(' ')[1:].copy()
-                text = ' '.join(text)
+                    text = message.content.split(' ')[1:].copy()
+                    text = ' '.join(text)
 
-                await channel.send(text)
-                await message.delete()
-
-                print('[SUCCESS] Message by {0}: {1}'.format(member, text))
-
-            elif message.content.split()[0] == '//pin' or message.content.split()[0] == '//p':
-                if len(message.content.split()) == 3:
-
-                    post_id = int(message.content.split()[1])
-                    role_id = int(message.content.split()[2])
-
+                    await channel.send(text)
                     await message.delete()
-                    
-                    config.POST_ID.append(post_id)
-                    config.ROLES[post_id] = role_id
-                    
-                    await self.DataChannel.send('**[ROLEDATA]** ' + ' '.join(message.content.split()[1:]))
-                    
-                    print('[SUCCESS] Pinrole by {0}'.format(member))
 
-                else:
-                    await channel.send('**[ERROR]** Wrong format!')
-                    print('[ERROR] Wrong format by ' + member)
+                    print('[SUCCESS] Message by {0}: {1}'.format(member, text))
 
-            elif message.content.split()[0] == '//cleanrole' or message.content.split()[0] == '//clrole':
+                elif message.content.split()[0] == '//pin' or message.content.split()[0] == '//p':
+                    if len(message.content.split()) == 3:
 
-                config.POST_ID = []
-                config.ROLES = {}
+                        post_id = int(message.content.split()[1])
+                        role_id = int(message.content.split()[2])
 
-                async for mes in self.DataChannel.history():
-                    if mes.content.split()[0] == '[ROLEDATA]':
+                        await message.delete()
+
+                        config.POST_ID.append(post_id)
+                        config.ROLES[post_id] = role_id
+
+                        await self.DataChannel.send('**[ROLEDATA]** ' + ' '.join(message.content.split()[1:]))
+
+                        print('[SUCCESS] Pinrole by {0}'.format(member))
+
+                    else:
+                        await channel.send('**[ERROR]** Wrong format!')
+                        print('[ERROR] Wrong format by ' + member)
+
+                elif message.content.split()[0] == '//cleanrole' or message.content.split()[0] == '//clrole':
+
+                    config.POST_ID = []
+                    config.ROLES = {}
+
+                    async for mes in self.DataChannel.history():
+                        if mes.content.split()[0] == '[ROLEDATA]':
+                            await mes.delete()
+
+                    await channel.send('**[SUCCESS]** All roles has been dellited from posts')
+
+                    print('[SUCCESS] All roles has been deleted from posts by', member)
+
+                elif message.content == '//clear room' or message.content == '//cl room':
+
+                    async for mes in channel.history():
                         await mes.delete()
 
-                await channel.send('**[SUCCESS]** All roles has been dellited from posts')
+                    print('[SUCCESS] Channel has been cleaned')
 
-                print('[SUCCESS] All roles has been deleted from posts by', member)
+                elif message.content.split()[0] == '//get':
+                    if message.content.split()[1] == 'botlist':
+                        bots = list()
 
-            elif message.content == '//clear room' or message.content == '//cl room':
+                        for mem in client.get_all_members():
+                            if mem.bot:
+                                bots.append(mem.name + ' - ' + str(member.id))
 
-                async for mes in channel.history():
-                    await mes.delete()
+                        await channel.send('**[SUCCESS]** Bot list:\n' + '\n'.join(bots))
+                        await message.delete()
 
-                print('[SUCCESS] Channel has been cleaned')
+                        print('[SUCCESS] Get botlist has ben donned by', member)
 
-            elif message.content.split()[0] == '//get':
-                if message.content.split()[1] == 'botlist':
-                    bots = list()
-
-                    for mem in client.get_all_members():
-                        if mem.bot:
-                            bots.append(mem.name + ' - ' + str(member.id))
-
-                    await channel.send('**[SUCCESS]** Bot list:\n' + '\n'.join(bots))
-                    await message.delete()
-
-                    print('[SUCCESS] Get botlist has ben donned by', member)
-
-        else:
-            print('[ERROR] Low permissions by ' + member)
+            else:
+                print('[ERROR] Low permissions by ' + member)
 
 
 # RUN
