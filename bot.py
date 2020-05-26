@@ -76,7 +76,7 @@ class MyClient(discord.Client):
                     perm = True
 
             if perm:
-                if message.content.split()[0] == '//write' or message.content.split()[0] == '//wr' or message.content.split()[0] == '!!!':
+                if message.content.split()[0] == '//write' or message.content.split()[0] == '//wr' or message.content[0:3] == '!!!':
 
                     text = message.content.split(' ')[1:].copy()
                     text = ' '.join(text)
